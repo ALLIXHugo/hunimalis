@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    Options + FollowSymLinks
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_URI} !^/hunimalis/public/
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+
+    RewriteRule ^(.*)$ /hunimalis/public/$1
+    #RewriteRule ^ index.php
+    RewriteRule ^(.*)?$ /hunimalis/public/index.php [L]
+</IfModule>

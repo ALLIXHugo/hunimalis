@@ -1,0 +1,325 @@
+@extends('layouts.app') 
+
+@section('content')
+<style>
+    * {
+        box-sizing: border-box; 
+    }
+
+    .error-msg {
+        color: #e53e3e; 
+        font-size: 13px;
+        font-weight: 600;
+        margin-top: 5px;
+        display: block;
+    }
+    .input-error {
+        border-color: #e53e3e !important;
+        background-color: #fff5f5 !important;
+    }
+
+    body, html {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f7fafc;
+    }
+
+    .main-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        width: 100%;
+        padding: 20px;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 999;
+    }
+
+    .auth-card {
+        background-color: #ffffff;
+        width: 100%;
+        max-width: 450px;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        margin: auto;
+    }
+
+    h2.form-title {
+        margin: 0 0 25px 0;
+        font-size: 24px; 
+        font-weight: 800;
+        color: #1a202c;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .close-icon {
+        color: #cbd5e0;
+        cursor: pointer;
+        font-size: 24px;
+        font-weight: normal;
+        line-height: 1;
+    }
+
+    .input-group {
+        margin-bottom: 20px;
+        width: 100%; 
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 15px;
+        font-weight: 700;
+        color: #4a5568; 
+    }
+
+    .password-container {
+        position: relative;
+        width: 100%; 
+        display: block;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        display: block; 
+        width: 100%;    
+        padding: 12px 15px; 
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 15px;
+        color: #2d3748;
+        background-color: #fff;
+        height: 48px; 
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #3182ce;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+    }
+
+    .toggle-eye {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #a0aec0;
+        background: none;
+        border: none;
+        padding: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .checkbox-wrapper {
+        display: flex;
+        align-items: flex-start;
+        font-size: 14px;
+        color: #4a5568;
+        margin-bottom: 25px;
+        margin-top: 10px;
+    }
+    .checkbox-wrapper input {
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        margin-right: 10px;
+        border-color: #cbd5e0;
+        border-radius: 4px;
+    }
+    a.link {
+        color: #2c3e50;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 14px;
+        background-color: #2c3e50; 
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-bottom: 20px;
+        text-transform: capitalize;
+    }
+
+    .btn-submit:hover {
+        background-color: #1a252f;
+    }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 20px 0;
+        color: #718096;
+        font-size: 14px;
+    }
+    .divider::before, .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    .divider span {
+        padding: 0 10px;
+    }
+
+    .btn-social {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 12px;
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        color: #4a5568;
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    
+    .btn-social:hover {
+        background-color: #f7fafc;
+    }
+
+    .btn-social.email-login {
+        background-color: #2c3e50;
+        color: white;
+        border: none;
+    }
+    
+    .btn-social img {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+    }
+
+    .main-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        width: 100%;
+        padding: 20px;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 999;
+        background-image: 
+            linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+            url("{{ asset('img/home_hero.webp') }}");
+        
+        background-size: cover;      
+        background-position: center; 
+        background-repeat: no-repeat;
+        background-attachment: fixed; 
+    }
+
+    .auth-card {
+        background-color: #ffffff;
+        width: 100%;
+        max-width: 450px;
+        padding: 40px;
+        border-radius: 12px; 
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        margin: auto;
+        position: relative;
+        z-index: 1000;
+    }
+    
+</style>
+
+<div class="main-wrapper">
+    <div class="auth-card">
+        
+        <h2 class="form-title">
+            S'inscrire
+            <a href="{{ url('/') }}" style="text-decoration: none; color: #cbd5e0;" class="close-icon">&times;</a>
+        </h2>
+
+        @if ($errors->has('error'))
+            <div style="background-color: #fee2e2; color: #b91c1c; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
+                <strong>Erreur :</strong> {{ $errors->first('error') }}
+            </div>
+        @endif
+        
+        <div style="border-bottom: 1px solid #e2e8f0; margin-bottom: 25px;"></div>
+
+        <form action="{{ url('/register') }}" method="POST">
+            @csrf
+            
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" required 
+                       class="@error('email') input-error @enderror"
+                       placeholder="Saisissez votre email" value="{{ old('email') }}">
+                
+                @error('email')
+                    <span class="error-msg">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="input-group" x-data="{ show: false }">
+                <label for="password">Mot de passe</label>
+                
+                <div class="password-container">
+                    <input :type="show ? 'text' : 'password'" id="password" name="password" required 
+                           class="@error('password') input-error @enderror"
+                           placeholder="Mot de passe">
+                    
+                    <button type="button" class="toggle-eye" @click="show = !show">
+                        <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        <svg x-show="show" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                    </button>
+                </div>
+
+                @error('password')
+                    <span class="error-msg">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="checkbox-wrapper">
+                <input id="cgu" name="cgu" type="checkbox" required class="@error('cgu') input-error @enderror">
+                <label for="cgu" style="font-weight: normal; margin: 0; line-height: 1.4;">
+                    En cochant cette case, vous reconnaissez avoir lu et accepté nos 
+                    <a href="{{ route('cgu') }}" target="_blank" class="link">Conditions générales d'utilisation</a>.
+                </label>
+            </div>
+            @error('cgu')
+                <span class="error-msg" style="margin-top: -20px; margin-bottom: 20px;">Vous devez accepter les CGU.</span>
+            @enderror
+
+            <button type="submit" class="btn-submit">
+                Créer Mon Compte
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>Ou</span>
+        </div>
+
+        <a href="{{ route('login') }}" class="btn-social email-login" style="text-decoration: none; justify-content: center;">
+            <span style="font-weight: 700; text-decoration: underline;">Se connecter avec Email</span>
+        </a>
+
+    </div>
+</div>
+
+<script src="//unpkg.com/alpinejs" defer></script>
+@endsection
